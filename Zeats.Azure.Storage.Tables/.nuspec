@@ -9,7 +9,7 @@
     <projectUrl>https://github.com/altair-sossai/zeats-azure-storage-tables</projectUrl>
     <iconUrl>https://zeatsbalancaautomatica.blob.core.windows.net/icons/nuget.png</iconUrl>
     <dependencies>
-      <group targetFramework=".NETCoreApp3.1">
+      <group targetFramework="netcoreapp3.1">
         <dependency id="Microsoft.Azure.Cosmos.Table" version="1.0.8" exclude="Build,Analyzers" />
       </group>
     </dependencies>
