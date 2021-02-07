@@ -11,6 +11,7 @@
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
         <dependency id="Microsoft.Azure.Cosmos.Table" version="1.0.8" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="3.1.11" exclude="Build,Analyzers" />
       </group>
     </dependencies>
     <frameworkReferences>
