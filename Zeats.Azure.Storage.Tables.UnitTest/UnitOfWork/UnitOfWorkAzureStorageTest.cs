@@ -4,74 +4,75 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Zeats.Azure.Storage.Tables.UnitOfWork;
 using Zeats.Azure.Storage.Tables.UnitTest.Factories;
 
-namespace Zeats.Azure.Storage.Tables.UnitTest.UnitOfWork;
-
-[TestClass]
-public class UnitOfWorkAzureStorageTest
+namespace Zeats.Azure.Storage.Tables.UnitTest.UnitOfWork
 {
-    private const string TableName = "UnitTestTable";
-    private UnitOfWorkAzureStorageTables _unitOfWorkAzureStorageTables;
-
-    [TestInitialize]
-    public void Initialize()
+    [TestClass]
+    public class UnitOfWorkAzureStorageTest
     {
-        _unitOfWorkAzureStorageTables = UnitOfWorkAzureStorageFactory.New();
-    }
+        private const string TableName = "UnitTestTable";
+        private UnitOfWorkAzureStorageTables _unitOfWorkAzureStorageTables;
 
-    [TestMethod]
-    public void GetTableReference()
-    {
-        var tableReference = _unitOfWorkAzureStorageTables.GetTableReference(TableName);
-
-        Assert.IsNotNull(tableReference);
-    }
-
-    [TestMethod]
-    public async Task CreateTableIfNotExistsAsync()
-    {
-        await _unitOfWorkAzureStorageTables.CreateTableIfNotExistsAsync(TableName);
-
-        var tableReference = _unitOfWorkAzureStorageTables.GetTableReference(TableName);
-        var exists = await tableReference.ExistsAsync();
-
-        Assert.IsTrue(exists);
-    }
-
-    [TestMethod]
-    public async Task InsertOrMergeAsync()
-    {
-        var sampleEntity = new SampleEntity
+        [TestInitialize]
+        public void Initialize()
         {
-            PartitionKey = "shared",
-            RowKey = "1",
-            Name = "Lorem Ipsum"
-        };
+            _unitOfWorkAzureStorageTables = UnitOfWorkAzureStorageFactory.New();
+        }
 
-        var tableResult = await _unitOfWorkAzureStorageTables.InsertOrMergeAsync(TableName, sampleEntity);
-        var result = tableResult.Result as SampleEntity;
-
-        Assert.IsNotNull(result);
-    }
-
-    [TestMethod]
-    public async Task RetrieveAsync()
-    {
-        var sampleEntity = new SampleEntity
+        [TestMethod]
+        public void GetTableReference()
         {
-            PartitionKey = "shared",
-            RowKey = "2",
-            Name = "Lorem Ipsum"
-        };
+            var tableReference = _unitOfWorkAzureStorageTables.GetTableReference(TableName);
 
-        await _unitOfWorkAzureStorageTables.InsertOrMergeAsync(TableName, sampleEntity);
+            Assert.IsNotNull(tableReference);
+        }
 
-        sampleEntity = await _unitOfWorkAzureStorageTables.RetrieveAsync<SampleEntity>(TableName, sampleEntity.PartitionKey, sampleEntity.RowKey);
+        [TestMethod]
+        public async Task CreateTableIfNotExistsAsync()
+        {
+            await _unitOfWorkAzureStorageTables.CreateTableIfNotExistsAsync(TableName);
 
-        Assert.IsNotNull(sampleEntity);
-    }
+            var tableReference = _unitOfWorkAzureStorageTables.GetTableReference(TableName);
+            var exists = await tableReference.ExistsAsync();
 
-    private class SampleEntity : TableEntity
-    {
-        public string Name { get; set; }
+            Assert.IsTrue(exists);
+        }
+
+        [TestMethod]
+        public async Task InsertOrMergeAsync()
+        {
+            var sampleEntity = new SampleEntity
+            {
+                PartitionKey = "shared",
+                RowKey = "1",
+                Name = "Lorem Ipsum"
+            };
+
+            var tableResult = await _unitOfWorkAzureStorageTables.InsertOrMergeAsync(TableName, sampleEntity);
+            var result = tableResult.Result as SampleEntity;
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public async Task RetrieveAsync()
+        {
+            var sampleEntity = new SampleEntity
+            {
+                PartitionKey = "shared",
+                RowKey = "2",
+                Name = "Lorem Ipsum"
+            };
+
+            await _unitOfWorkAzureStorageTables.InsertOrMergeAsync(TableName, sampleEntity);
+
+            sampleEntity = await _unitOfWorkAzureStorageTables.RetrieveAsync<SampleEntity>(TableName, sampleEntity.PartitionKey, sampleEntity.RowKey);
+
+            Assert.IsNotNull(sampleEntity);
+        }
+
+        private class SampleEntity : TableEntity
+        {
+            public string Name { get; set; }
+        }
     }
 }

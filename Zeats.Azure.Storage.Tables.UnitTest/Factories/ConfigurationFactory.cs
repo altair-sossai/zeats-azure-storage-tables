@@ -1,19 +1,20 @@
 ﻿using System.IO;
 using Microsoft.Extensions.Configuration;
 
-namespace Zeats.Azure.Storage.Tables.UnitTest.Factories;
-
-public static class ConfigurationFactory
+namespace Zeats.Azure.Storage.Tables.UnitTest.Factories
 {
-    public static IConfiguration New()
+    public static class ConfigurationFactory
     {
-        var configurationBuilder = new ConfigurationBuilder();
+        public static IConfiguration New()
+        {
+            var configurationBuilder = new ConfigurationBuilder();
 
-        var builder = configurationBuilder
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("local.settings.json", true)
-            .AddEnvironmentVariables();
+            var builder = configurationBuilder
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("local.settings.json", true)
+                .AddEnvironmentVariables();
 
-        return builder.Build();
+            return builder.Build();
+        }
     }
 }
